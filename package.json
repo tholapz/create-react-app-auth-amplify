@@ -6,8 +6,9 @@
     "aws-amplify": "^1.1.6",
     "aws-amplify-react": "^2.0.7",
     "bootstrap": "^4.1.3",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
+    "dhtmlx-gantt": "^6.2.3",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-scripts": "2.0.4"
   },
   "scripts": {
