@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import { withAuthenticator } from 'aws-amplify-react';
+import Amplify from 'aws-amplify';
+import aws_exports from './aws-exports';
+
 import Gantt from './components/Gantt';
 import Toolbar from './components/Toolbar';
 import MessageArea from './components/MessageArea';
 import './App.css';
-
+Amplify.configure(aws_exports)
 // static data for our gantt chart
 const data = {
   data: [
@@ -76,4 +80,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withAuthenticator(App, true);
