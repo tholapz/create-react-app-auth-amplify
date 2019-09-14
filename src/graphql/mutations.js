@@ -22,8 +22,35 @@ export const deleteProject = `mutation DeleteProject($input: DeleteProjectInput!
   }
 }
 `;
-export const createGantt = `mutation CreateGantt($input: CreateGanttInput!) {
-  createGantt(input: $input) {
+export const createLink = `mutation CreateLink($input: CreateLinkInput!) {
+  createLink(input: $input) {
+    id
+    source
+    target
+    type
+  }
+}
+`;
+export const updateLink = `mutation UpdateLink($input: UpdateLinkInput!) {
+  updateLink(input: $input) {
+    id
+    source
+    target
+    type
+  }
+}
+`;
+export const deleteLink = `mutation DeleteLink($input: DeleteLinkInput!) {
+  deleteLink(input: $input) {
+    id
+    source
+    target
+    type
+  }
+}
+`;
+export const createTask = `mutation CreateTask($input: CreateTaskInput!) {
+  createTask(input: $input) {
     id
     text
     start_date
@@ -33,8 +60,8 @@ export const createGantt = `mutation CreateGantt($input: CreateGanttInput!) {
   }
 }
 `;
-export const updateGantt = `mutation UpdateGantt($input: UpdateGanttInput!) {
-  updateGantt(input: $input) {
+export const updateTask = `mutation UpdateTask($input: UpdateTaskInput!) {
+  updateTask(input: $input) {
     id
     text
     start_date
@@ -44,8 +71,8 @@ export const updateGantt = `mutation UpdateGantt($input: UpdateGanttInput!) {
   }
 }
 `;
-export const deleteGantt = `mutation DeleteGantt($input: DeleteGanttInput!) {
-  deleteGantt(input: $input) {
+export const deleteTask = `mutation DeleteTask($input: DeleteTaskInput!) {
+  deleteTask(input: $input) {
     id
     text
     start_date

@@ -22,14 +22,41 @@ export const onDeleteProject = `subscription OnDeleteProject($id: ID, $title: St
   }
 }
 `;
-export const onCreateGantt = `subscription OnCreateGantt(
+export const onCreateLink = `subscription OnCreateLink($id: ID, $source: ID, $target: ID, $type: String) {
+  onCreateLink(id: $id, source: $source, target: $target, type: $type) {
+    id
+    source
+    target
+    type
+  }
+}
+`;
+export const onUpdateLink = `subscription OnUpdateLink($id: ID, $source: ID, $target: ID, $type: String) {
+  onUpdateLink(id: $id, source: $source, target: $target, type: $type) {
+    id
+    source
+    target
+    type
+  }
+}
+`;
+export const onDeleteLink = `subscription OnDeleteLink($id: ID, $source: ID, $target: ID, $type: String) {
+  onDeleteLink(id: $id, source: $source, target: $target, type: $type) {
+    id
+    source
+    target
+    type
+  }
+}
+`;
+export const onCreateTask = `subscription OnCreateTask(
   $id: ID
   $text: String
-  $start_date: AWSDateTime
+  $start_date: AWSDate
   $duration: Int
   $progress: Float
 ) {
-  onCreateGantt(
+  onCreateTask(
     id: $id
     text: $text
     start_date: $start_date
@@ -45,14 +72,14 @@ export const onCreateGantt = `subscription OnCreateGantt(
   }
 }
 `;
-export const onUpdateGantt = `subscription OnUpdateGantt(
+export const onUpdateTask = `subscription OnUpdateTask(
   $id: ID
   $text: String
-  $start_date: AWSDateTime
+  $start_date: AWSDate
   $duration: Int
   $progress: Float
 ) {
-  onUpdateGantt(
+  onUpdateTask(
     id: $id
     text: $text
     start_date: $start_date
@@ -68,14 +95,14 @@ export const onUpdateGantt = `subscription OnUpdateGantt(
   }
 }
 `;
-export const onDeleteGantt = `subscription OnDeleteGantt(
+export const onDeleteTask = `subscription OnDeleteTask(
   $id: ID
   $text: String
-  $start_date: AWSDateTime
+  $start_date: AWSDate
   $duration: Int
   $progress: Float
 ) {
-  onDeleteGantt(
+  onDeleteTask(
     id: $id
     text: $text
     start_date: $start_date

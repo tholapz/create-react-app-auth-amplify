@@ -22,8 +22,33 @@ export const listProjects = `query ListProjects(
   }
 }
 `;
-export const getGantt = `query GetGantt($id: ID!) {
-  getGantt(id: $id) {
+export const getLink = `query GetLink($id: ID!) {
+  getLink(id: $id) {
+    id
+    source
+    target
+    type
+  }
+}
+`;
+export const listLinks = `query ListLinks(
+  $filter: TableLinkFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listLinks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      source
+      target
+      type
+    }
+    nextToken
+  }
+}
+`;
+export const getTask = `query GetTask($id: ID!) {
+  getTask(id: $id) {
     id
     text
     start_date
@@ -33,12 +58,12 @@ export const getGantt = `query GetGantt($id: ID!) {
   }
 }
 `;
-export const listGantts = `query ListGantts(
-  $filter: TableGanttFilterInput
+export const listTasks = `query ListTasks(
+  $filter: TableTaskFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listGantts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       text
