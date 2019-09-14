@@ -3,11 +3,41 @@ import { withAuthenticator } from 'aws-amplify-react';
 import Amplify from 'aws-amplify';
 import aws_exports from './aws-exports';
 
-import {GraphGantt} from './components/Gantt/GraphGantt';
+import { ApolloProvider } from "react-apollo";
+import AWSAppSyncClient, { defaultDataIdFromObject } from "aws-appsync";
+import { Rehydrated } from "aws-appsync-react";
+import {HOC} from './components/Gantt/GraphGantt';
 import Toolbar from './components/Toolbar';
 import MessageArea from './components/MessageArea';
 import './App.css';
 Amplify.configure(aws_exports)
+
+const client = new AWSAppSyncClient({
+  url: aws_exports.aws_appsync_graphqlEndpoint,
+  region: aws_exports.aws_appsync_region,
+  auth: {
+    type: aws_exports.aws_appsync_authenticationType,
+    apiKey: aws_exports.aws_appsync_apiKey,
+  },
+  cacheOptions: {
+    dataIdFromObject: (obj) => {
+      let id = defaultDataIdFromObject(obj);
+
+      if (!id) {
+        const { __typename: typename } = obj;
+        switch (typename) {
+          case 'Comment':
+            return `${typename}:${obj.commentId}`;
+          default:
+            return id;
+        }
+      }
+
+      return id;
+    }
+  }
+});
+
 
 
 class App extends Component {
@@ -48,6 +78,8 @@ class App extends Component {
   render() {
     const { currentZoom, messages } = this.state;
     return (
+      <ApolloProvider client={client}>
+    <Rehydrated>
       <div>
         <div className="zoom-bar">
           <Toolbar
@@ -56,7 +88,7 @@ class App extends Component {
           />
         </div>
         <div className="gantt-container">
-          <GraphGantt
+          <HOC
             zoom={currentZoom}
             onDataUpdated={this.logDataUpdate}
           />
@@ -65,6 +97,8 @@ class App extends Component {
           messages={messages}
         />
       </div>
+      </Rehydrated>
+      </ApolloProvider>
     );
   }
 }

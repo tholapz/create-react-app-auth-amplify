@@ -1,9 +1,8 @@
 import React from 'react';
-import { ApolloProvider } from "react-apollo";
-import AWSAppSyncClient, { defaultDataIdFromObject } from "aws-appsync";
-import appSyncConfig from "../../aws-exports";
-import { Rehydrated } from "aws-appsync-react";
 import Gantt from '.';
+import gql from "graphql-tag";
+import { graphql, compose, withApollo } from "react-apollo";
+import { listTasks } from "../../graphql/queries";
 
 // static data for our gantt chart
 const data = {
@@ -17,40 +16,21 @@ const data = {
 };
 
 export const GraphGantt = (props) => {
-  return <Gantt {...props} tasks={data}/>
+  const tasks = {data: props.tasks, links: data.links};
+
+  return <Gantt {...props} tasks={tasks}/>
 }
 
-const client = new AWSAppSyncClient({
-  url: appSyncConfig.aws_appsync_graphqlEndpoint,
-  region: appSyncConfig.aws_appsync_region,
-  auth: {
-    type: appSyncConfig.aws_appsync_authenticationType,
-    apiKey: appSyncConfig.aws_appsync_apiKey,
-  },
-  cacheOptions: {
-    dataIdFromObject: (obj) => {
-      let id = defaultDataIdFromObject(obj);
 
-      if (!id) {
-        const { __typename: typename } = obj;
-        switch (typename) {
-          case 'Comment':
-            return `${typename}:${obj.commentId}`;
-          default:
-            return id;
-        }
-      }
-
-      return id;
+export const HOC = withApollo(compose(
+  graphql(
+    gql(listTasks), {
+      options: {
+        fetchPolicy: 'cache-first',
+      },
+      props: ({ data: { listTasks = { items: [] } } }) => ({
+        tasks: listTasks.items
+    })
     }
-  }
-});
-
-
-export const WithProvider = () => (
-  <ApolloProvider client={client}>
-    <Rehydrated>
-      <GraphGantt />
-    </Rehydrated>
-  </ApolloProvider>
-);
+  )
+)(GraphGantt))
